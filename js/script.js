@@ -280,7 +280,7 @@ if (secondGrid) {
 }
 
 /* featured heart-framed photo uses the same fallback chain */
-withFallbacks($(".heart-frame__img img"), "photo1");
+withFallbacks($(".heart-frame__img img"), "second7");
 
 /* ============================================================
    6. LIGHTBOX
