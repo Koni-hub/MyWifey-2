@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Happy 2nd Monthsary, Wifey 💗</title>
+  <meta name="description" content="A little surprise for my wifey — happy 2nd monthsary!" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Scalable heart clip shape (objectBoundingBox = scales to any screen size) -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+        <path d="M0.5,0.95238 C0.14286,0.69048 0.02381,0.47619 0.02381,0.28571 C0.02381,0.13095 0.14286,0.03571 0.27381,0.03571 C0.36905,0.03571 0.45238,0.09048 0.5,0.17143 C0.54762,0.09048 0.63095,0.03571 0.72619,0.03571 C0.85714,0.03571 0.97619,0.13095 0.97619,0.28571 C0.97619,0.47619 0.85714,0.69048 0.5,0.95238 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- ============ INTRO / ENVELOPE GATE ============ -->
+  <div id="intro" class="intro">
+    <div class="intro__inner">
+      <div class="envelope" id="envelope">
+        <div class="envelope__flap"></div>
+        <div class="envelope__body">
+          <span class="envelope__heart">💗</span>
+        </div>
+      </div>
+      <p class="intro__hint">Another surprise for you 💌</p>
+      <button class="intro__btn" id="openBtn">Open it, Wifey Ko✨</button>
+    </div>
+  </div>
+
+  <!-- ============ FLOATING HEARTS CANVAS ============ -->
+  <canvas id="hearts" class="hearts-canvas"></canvas>
+
+  <!-- ============ TOP NAV ============ -->
+  <nav class="nav">
+    <span class="nav__brand">Koni <span class="nav__amp">&hearts;</span> Yana</span>
+    <button class="music-btn" id="musicBtn" title="Play / pause music">
+      <span id="musicIcon">♪</span> <span class="music-btn__label">music</span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <header class="hero" id="top">
+      <p class="hero__kicker reveal">to my one and only</p>
+      <h1 class="hero__title">
+        <span class="hero__line reveal">Happy</span>
+        <span class="hero__line hero__line--big reveal">2<sup>nd</sup> Monthsary</span>
+        <span class="hero__script reveal">Wifey&nbsp;ko 💗</span>
+      </h1>
+      <p class="hero__sub reveal">
+        Two months down, forever to go. Thank you for staying — for making even the
+        ordinary days feel like something worth keeping.
+      </p>
+      <div class="hero__heartbeat reveal" aria-hidden="true">
+        <span class="pulse"></span>
+        <span class="emoji-heart">❤️</span>
+      </div>
+      <a class="scroll-cue" href="#memories" aria-label="Scroll down">
+        <span></span>
+      </a>
+    </header>
+
+    <!-- ============ SINCE ============ -->
+    <section class="section counter" id="counter">
+      <h2 class="section__title reveal">Two months of <em>us</em></h2>
+      <p class="section__sub reveal">and every second has been worth it</p>
+      <p class="counter__caption reveal">of loving you &mdash; since September 5, 2026 11:34PM</p>
+    </section>
+
+    <!-- ============ FEATURED MEMORY ============ -->
+    <section class="section featured" id="memories">
+      <h2 class="section__title reveal">Our favorite memory</h2>
+      <p class="section__sub reveal">the little things that mean everything</p>
+
+      <figure class="heart-frame reveal" id="heartFrame">
+        <div class="heart-frame__img">
+          <img src="assets/photo1.jpg" data-fallbacks="assets/photo1.png,assets/photo1.jpeg,assets/photo1.jpg" alt="Our photo together" />
+          <div class="photo-placeholder"><span>💗</span><small>Add <b>assets/photo1.jpg</b></small></div>
+        </div>
+        <figcaption class="heart-frame__caption">Two halves, one whole heart 💗</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ 2ND MONTHSARY GALLERY ============ -->
+    <section class="section gallery" id="second">
+      <h2 class="section__title reveal">Our 2nd monthsary 📸</h2>
+      <p class="section__sub reveal">the new ones — month two, in pictures</p>
+
+      <div class="gallery__grid" id="secondGrid">
+        <!-- built from assets/second1.jpg, second2.jpg … in js/script.js -->
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="section gallery">
+      <h2 class="section__title reveal">Our memories 📸</h2>
+      <p class="section__sub reveal">click a photo to see it bigger</p>
+
+      <div class="gallery__grid" id="galleryGrid">
+        <!-- photos are configured in js/script.js -->
+      </div>
+    </section>
+
+    <!-- ============ REASONS ============ -->
+    <section class="section reasons">
+      <h2 class="section__title reveal">Why you're still my favorite</h2>
+      <p class="section__sub reveal">two months in, and the list just keeps growing</p>
+      <div class="reasons__grid">
+        <article class="reason reveal"><span class="reason__emoji">🌙</span><h3>Your goodnights</h3><p>Two months of them, and I still wait for your last message before I sleep.</p></article>
+        <article class="reason reveal"><span class="reason__emoji">🤝</span><h3>Your patience</h3><p>You stayed through my busy days, my tired days, and my quiet ones too.</p></article>
+        <article class="reason reveal"><span class="reason__emoji">☎️</span><h3>Our calls</h3><p>Even the silent ones feel like home — just you there, and that's enough.</p></article>
+        <article class="reason reveal"><span class="reason__emoji">📌</span><h3>Your updates</h3><p>Every “im home na” still makes my whole day feel lighter.</p></article>
+        <article class="reason reveal"><span class="reason__emoji">💬</span><h3>Your honesty</h3><p>Even the hard conversations, because you'd rather fix us than walk away.</p></article>
+        <article class="reason reveal"><span class="reason__emoji">💯</span><h3>Just you</h3><p>Two months later, still my favorite person. No contest, no hesitation.</p></article>
+      </div>
+    </section>
+
+    <!-- ============ LETTERS ============ -->
+    <section class="section letters" id="letter">
+      <h2 class="section__title reveal">A letter for you 💌</h2>
+      <p class="section__sub reveal">please read it slowly, okay?</p>
+
+      <!-- Letter 1 -->
+      <article class="letter reveal">
+        <div class="letter__stamp">💗</div>
+        <p class="letter__date">Happy 2nd Monthsary</p>
+        <p class="letter__greeting">Wifey ko! 💗</p>
+        <p>
+          Happy 2nd monthsary sa atin. Dalawang buwan na mula noong
+          <b>September 5, 11:34 PM</b> — at ang totoo, mas malalim pa ang pagmamahal ko
+          sa'yo ngayon kaysa noong unang araw na sinabi nating tayo na.
+        </p>
+        <p>
+          Sa second month natin, hindi na lang kilig ang naramdaman ko. Mas naging
+          <i>tahimik</i> — yung tipong kahit wala tayong ginagawa kundi magkausap sa call,
+          masaya na ako. Yung mga <i>“goodmorning mylove”</i>, <i>“eatwell”</i>, at
+          <i>“update me”</i> na paulit-ulit — hindi sila naging routine. Naging tahanan.
+        </p>
+        <p>
+          Salamat kasi pinili mo pa rin akong kausapin sa mga araw na pagod ako, at
+          pinakitaan mo ako ng pasensya sa mga araw na hindi ako madaling intindihin.
+          Hindi ko man laging nasasabi, nakikita ko lahat ng iyon. Mahal na mahal kita —
+          ngayon, sa susunod na buwan, at sa lahat ng susunod pa. ✨
+        </p>
+        <p class="letter__signoff">I love you!<br /><span class="letter__signature">— Hubby 🥰</span></p>
+      </article>
+
+      <!-- Letter 2 (deeper) -->
+      <div class="letter-more reveal">
+        <button class="letter-more__btn" id="deepLetterBtn">
+          <span class="letter-more__label">Read the deeper one ✨</span>
+          <span class="letter-more__arrow">↓</span>
+        </button>
+      </div>
+
+      <article class="letter letter--deep" id="deepLetter" hidden>
+        <div class="letter__stamp">✨</div>
+        <p class="letter__date">Dalawang buwan, at isang buong puso pa rin</p>
+        <p class="letter__greeting">Wifey ko,</p>
+
+        <p>
+          Kung ang unang buwan ay tungkol sa kilig at pagkilala sa isa't isa, ang
+          pangalawang buwan na ito ay tungkol sa <b>pagpili</b> — pagpili ulit, araw-araw,
+          sa mga araw na exciting kami at sa mga araw na mahirap lang.
+        </p>
+        <p>
+          Simula noong <b>September 5, 11:34 PM</b>, dumaan tayo sa lahat ng klase ng gabi.
+          May mga gabing puro tawa, may mga gabing puro <i>“sorry”</i>, may mga gabing
+          nauubos ang battery kakatawag, at may mga gabing tahimik lang tayo — pero
+          <b>pareho pa ring nandiyan</b>. Doon ko naintindihan na hindi pala yung malalaking
+          moment ang bumubuo ng relasyon. Yung maliliit na pagpiling manatili ang tunay na
+          bumubuo.
+        </p>
+        <p>
+          Naaalala ko pa yung website na ginawa ko para sa first monthsary natin — yung
+          maliit na lugar sa internet kung saan nakasulat lahat ng hindi ko kayang sabihin
+          nang tama sa chat. Ngayong second monthsary, ginawa ko ulit. Hindi dahil may bago,
+          kundi dahil <b>dumadami</b>. Dumadami ang memories, dumadami ang rason, at
+          dumadami ang pangako kong babalikan ka.
+        </p>
+        <p>
+          Hindi naman tayo perpekto. May mga oras pa rin na nagkakaintindihan tayo nang
+          mali, na nagiging mabigat ang tono, na napapagod tayo. Pero ang pinaka-gusto ko
+          sa'tin: <b>hindi tayo natutulog nang galit</b>. Palagi tayong bumabalik. Palagi
+          tayong nag-uusap. Palagi tayong may nag-oo kahit mahirap. At sa akin, iyon na ang
+          pinakamalakas na senyales na totoo ito.
+        </p>
+        <p>
+          Sa bawat <i>“call ka pag gising mo”</i>, sa bawat <i>“take ur time”</i>, sa bawat
+          <i>“ingat ka palagi”</i> — nandiyan ka. Hindi lang sa masasayang araw, kundi lalo
+          na sa mga araw na kailangan ko. Salamat sa pag-unawa tuwing nakatutok ako sa
+          school at sa thesis, at sa paniniwalang mayroon ka sa akin kahit hindi pa ako
+          naniniwala sa sarili ko.
+        </p>
+        <p>
+          At kahit magkalayo tayo, kahit gaano pa katagal bago tayo magkita —
+          alam mo ba? Masaya na ako. Kasi ang mahalaga sa akin ay ang <b>ikaw</b>, hindi
+          ang distansya. Yung simpleng alam kong nandiyan ka, sapat na.
+        </p>
+        <p class="letter__quote">
+          “Hindi tama ang isang buwan lang para sabihing mahal kita. Kaya heto —
+          pangalawang buwan, parehong intensyon: pipiliin pa rin kita, at uunahin pa rin
+          kita, hangga't pinapayagan mo.”
+        </p>
+        <p class="letter__label">mga linya natin na hindi ko malimutan ✦</p>
+        <ul class="letter__lines">
+          <li>“goodmorning mylove 💗” <em>una mong sabi araw-araw</em></li>
+          <li>“call ka pag gising mo” <em>at hindi ako pumapalyo</em></li>
+          <li>“basta here ka lang sa call ha” <em>hindi ako aalis</em></li>
+          <li>“update me ha”” <em>ang patakbo ng araw natin</em></li>
+          <li>“eatwell” / “sleepwell” <em>para sa'kin, galing din sayo</em></li>
+          <li>“take ur time” <em>kahit gaano pa katagal, hihintayin kita</em></li>
+          <li>“im home” → “welcome home mylovee” <em>ang paborito kong update</em></li>
+        </ul>
+        <p>
+          Kaya sa second monthsary natin, ito ang pinaka-tapat kong sasabihin:
+          <b>hindi kita iiwan.</b> Hindi yun dahil obligado ako, kundi dahil pinili kita
+          noong September 5, 11:34PM — at pinipili pa rin kita ngayong November 5, at sa lahat ng
+          susunod na buwan.
+        </p>
+        <p>
+          Salamat sa dalawang buwan, Yana. Salamat sa pagmamahal na tahimik pero totoo.
+          Salamat sa bawat “iloveyouuuu” and "imissyou" na hindi mo pinagod. At promise ko — gagawin ko
+          mong proud na pinili mo ako. Sa 3rd, sa 4th, sa 5th, at sa lahat ng darating pa. ✨
+        </p>
+        <p class="letter__signoff"><span class="letter__signature">— Your Hubby, Koni 🥰</span></p>
+        <p class="letter__ps">
+          P.S. Laging eatwell at sleepwell, at lagi mong i-update ako — ako ang bahala sa'yo.
+          At kung may gabing pagod na pagod ka na, tandaan mo: <i>“nandito lang ako dadamayan ka</i>
+          hindi lang ngayon — kundi hanggang sa susunod na buwan, at sa mga susunod
+          pa. 💗
+        </p>
+      </article>
+    </section>
+
+    <!-- ============ CLOSING ============ -->
+    <section class="closing">
+      <p class="closing__script reveal">see you on our 3rd…</p>
+      <h2 class="closing__title reveal">and the 4th, and the 5th,<br />and every month after that 💗</h2>
+      <button class="closing__btn reveal" id="heartBurstBtn">tap for hearts 🥰</button>
+      <p class="closing__sign reveal">— Koni <span>&hearts;</span> Yana</p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Made with love, just for you 💗 &nbsp;•&nbsp; Happy 2nd Monthsary</p>
+  </footer>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+    <p class="lightbox__caption" id="lightboxCaption"></p>
+  </div>
+
+  <!-- hidden music element: add assets/music.mp3 and it will work -->
+  <audio id="bgMusic" loop preload="auto" src="assets/music.mp3"></audio>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
