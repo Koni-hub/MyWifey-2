@@ -29,19 +29,21 @@
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
 
-  <!-- ============ INTRO TITLE CARD ============ -->
+  <!-- ============ INTRO FILM GATE ============ -->
   <section class="intro" id="intro">
     <div class="intro__inner">
-      <p class="eyebrow eyebrow--center">A little film for Yana</p>
-      <h1 class="intro__title">Two <em>Months</em></h1>
-      <p class="intro__sub">with the one who feels like home</p>
+      <button class="film-reel" id="filmReel" type="button" aria-label="Play our film">
+        <span class="film-reel__clapper" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="film-reel__body" aria-hidden="true"><i></i><i></i><i></i><i></i><b>♥</b></span>
+      </button>
+      <p class="intro__hint">You have a surprise <span aria-hidden="true">🎬</span></p>
       <button class="btn btn--gold intro__btn" id="openBtn" type="button">
-        <span>Begin</span>
+        <span>Play it, Wifey Ko</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <p class="intro__hint">headphones on, my love</p>
     </div>
-    <span class="intro__date">05 · 09 · 26 &nbsp;—&nbsp; 05 · 11 · 26</span>
+    <span class="intro__credit">KONI &amp; YANA PICTURES PRESENTS</span>
+    <span class="intro__date">A LOVE STORY · CHAPTER 02</span>
   </section>
 
   <!-- ============ TOP BAR ============ -->
@@ -68,6 +70,12 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero" id="top">
+      <video class="hero__video" id="heroVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__video-shade" aria-hidden="true"></div>
+      <div class="hero__film-grain" aria-hidden="true"></div>
+      <div class="hero__letterbox" aria-hidden="true"><span></span><span></span></div>
       <p class="eyebrow eyebrow--center reveal">05 September 2026 — 05 November 2026</p>
       <h1 class="hero__title reveal">
         <span class="hero__over">Celebrating</span>
@@ -148,9 +156,17 @@
         <p class="eyebrow eyebrow--center">New memories</p>
         <h2 class="display">Month two, <em>in frames.</em></h2>
         <p class="section__sub">the new ones — month two, in pictures</p>
+        <div class="arrows month-two-arrows" aria-label="Scroll month two photos">
+          <button class="arrow" id="monthTwoPrev" type="button" aria-label="Previous month two photos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="arrow" id="monthTwoNext" type="button" aria-label="Next month two photos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
 
-      <div class="masonry" id="secondGrid">
+      <div class="filmstrip" id="secondGrid">
         <!-- built from assets/second1… in js/script.js -->
       </div>
     </section>

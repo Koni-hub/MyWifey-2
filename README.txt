@@ -8,6 +8,17 @@ Double-click "index.html" — that's it!
 Note: keep the whole folder together (index.html, css, js, assets).
 The page needs them all in the same place.
 
+HERO BACKGROUND VIDEO
+---------------------
+To show a looping video behind the opening "Two Months" hero, add an
+MP4 named:
+
+    assets\hero.mp4
+
+It autoplays muted and loops. Keep the video reasonably compressed for
+mobile loading. If it is missing or cannot autoplay, the starfield
+background remains visible.
+
 THE DESIGN — "midnight cinema"
 ------------------------------
 This is a brand-new look from the 1st monthsary site:

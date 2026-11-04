@@ -75,18 +75,35 @@ const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matc
    ============================================================ */
 const intro = $("#intro");
 const openBtn = $("#openBtn");
+const filmReel = $("#filmReel");
 document.body.classList.add("is-locked", "is-intro");
 
+let introOpening = false;
 function openSurprise() {
-  if (!intro) return;
-  intro.classList.add("is-out");
-  document.body.classList.remove("is-locked");
-  document.body.classList.remove("is-intro");
-  playMusic();
-  setTimeout(() => { intro.hidden = true; }, 1050);
+  if (!intro || introOpening) return;
+  introOpening = true;
+  filmReel?.classList.add("is-playing");
+  setTimeout(() => {
+    intro.classList.add("is-out");
+    document.body.classList.remove("is-locked", "is-intro");
+    heroVideo?.play().catch(() => {});
+    playMusic();
+    setTimeout(() => { intro.hidden = true; }, 1050);
+  }, 620);
 }
 
 if (openBtn) openBtn.addEventListener("click", openSurprise);
+if (filmReel) filmReel.addEventListener("click", openSurprise);
+
+/* Hero background video: reveal only after playback starts; keep the starfield fallback. */
+const heroVideo = $("#heroVideo");
+if (heroVideo) {
+  heroVideo.addEventListener("playing", () => heroVideo.classList.add("is-playing"));
+  heroVideo.addEventListener("error", () => heroVideo.classList.remove("is-playing"));
+  heroVideo.play().catch(() => {
+    /* Autoplay can be blocked; video still starts when the intro button is pressed. */
+  });
+}
 
 /* ============================================================
    2. STARFIELD
@@ -322,7 +339,7 @@ CONFIG.photos.forEach((p, idx) => {
   galleryItems.push({ img, caption: p.caption });
 });
 
-/* ---- Month two masonry ---- */
+/* ---- Month two filmstrip ---- */
 const secondGrid = $("#secondGrid");
 const secondSection = $("#second");
 let secondFailed = 0;
@@ -332,17 +349,15 @@ if (secondGrid) {
     const caption = SECOND_CAPTIONS[n] || "2nd monthsary 💗";
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "tile reveal";
+    btn.className = "frame frame--month-two reveal";
     btn.style.transitionDelay = `${Math.min((n - 1) * 55, 440)}ms`;
     btn.innerHTML = `
-      <span class="tile__media">
+      <span class="frame__wrap">
         <img alt="${caption.replace(/"/g, "&quot;")}">
-        <span class="tile__ph">♥<small>assets/second${n}.jpg</small></span>
+        <span class="frame__num">${String(n).padStart(2, "0")}</span>
+        <span class="frame__ph">♥<small>assets/second${n}.jpg</small></span>
       </span>
-      <span class="tile__overlay">
-        <span class="tile__num">${String(n).padStart(2, "0")}</span>
-        <span class="tile__cap">${caption}</span>
-      </span>
+      <span class="frame__cap">${caption}</span>
     `;
 
     const img = btn.querySelector("img");
@@ -366,14 +381,24 @@ if (featuredImg) withFallbacks(featuredImg, "second7");
    ============================================================ */
 const strip = $("#galleryGrid");
 function scrollStrip(dir) {
-  if (!strip) return;
-  const card = strip.querySelector(".frame");
+  const targetStrip = strip;
+  if (!targetStrip) return;
+  const card = targetStrip.querySelector(".frame");
   const step = card ? card.getBoundingClientRect().width + 18 : 320;
-  strip.scrollBy({ left: dir * step * 1.6, behavior: reduceMotion ? "auto" : "smooth" });
+  targetStrip.scrollBy({ left: dir * step * 1.6, behavior: reduceMotion ? "auto" : "smooth" });
+}
+
+function scrollMonthTwo(dir) {
+  if (!secondGrid) return;
+  const card = secondGrid.querySelector(".frame");
+  const step = card ? card.getBoundingClientRect().width + 18 : 320;
+  secondGrid.scrollBy({ left: dir * step * 1.6, behavior: reduceMotion ? "auto" : "smooth" });
 }
 
 $("#archivePrev")?.addEventListener("click", () => scrollStrip(-1));
 $("#archiveNext")?.addEventListener("click", () => scrollStrip(1));
+$("#monthTwoPrev")?.addEventListener("click", () => scrollMonthTwo(-1));
+$("#monthTwoNext")?.addEventListener("click", () => scrollMonthTwo(1));
 
 /* ============================================================
    7. LIGHTBOX
