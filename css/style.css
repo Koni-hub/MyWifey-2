@@ -619,14 +619,14 @@ main, .topbar, .dock {
   transition: opacity 1.2s ease;
 }
 
-.hero__video.is-playing { opacity: 1; }
+.hero__video.is-playing { opacity: 0.01; }
 
 .hero__video-shade {
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(8, 7, 15, 0.48), rgba(8, 7, 15, 0.3) 42%, rgba(8, 7, 15, 0.7)),
-    radial-gradient(ellipse at center, rgba(8, 7, 15, 0.04) 20%, rgba(8, 7, 15, 0.42) 100%),
-    linear-gradient(115deg, rgba(216, 177, 131, 0.08), transparent 45%, rgba(73, 73, 135, 0.12));
+    linear-gradient(180deg, rgba(8, 7, 15, 0.16), rgba(8, 7, 15, 0.08) 42%, rgba(8, 7, 15, 0.24)),
+    radial-gradient(ellipse at center, rgba(8, 7, 15, 0) 20%, rgba(8, 7, 15, 0.14) 100%),
+    linear-gradient(115deg, rgba(216, 177, 131, 0.025), transparent 45%, rgba(73, 73, 135, 0.04));
 }
 
 .hero__film-grain {
