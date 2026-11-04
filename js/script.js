@@ -1,11 +1,11 @@
 /* ============================================================
-   Happy 2nd Monthsary, Wifey 💗
-   Edit the CONFIG block below to personalize everything.
+   Two Months of Us — script
+   Personalize the CONFIG block below.
    ============================================================ */
 
 const CONFIG = {
-  /* ⭐ EDIT: your photos — drop the files into the "assets" folder.
-     Each entry tries .jpg first, then .png, then .jpeg.        */
+  /* ⭐ YOUR PHOTOS — drop the files into "assets".
+     Each entry tries .jpg, then .png, then .jpeg. */
   photos: [
     { file: "photo1", caption: "Two halves, one whole heart 💗", hero: true },
     { file: "photo2", caption: "“My Wifey” drawing ⭐" },
@@ -26,19 +26,17 @@ const CONFIG = {
     { file: "photo17", caption: "Drawing together over video call 🎨" },
   ],
 
-  /* Optional: name a song by putting it at assets/music.mp3 */
-  music: "assets/music.mp3",
+  /* ⭐ YOUR SONG — drop your own file at "assets/music.mp3".
+     Change the title/artist so the player shows the right name. */
+  music: {
+    src: "assets/music.mp3",
+    title: "Miles Apart",
+    artist: "Nick Wilson",
+  },
 };
 
-/* ============================================================
-   NEW PHOTOS FOR THE 2ND MONTHSARY 💗
-   Save them as assets/second1.jpg, second2.jpg, second3.jpg …
-   (.png and .jpeg also work.) Only the files that exist will show,
-   so you can add as many as you like — no editing needed.
-
-   Want a custom caption? Uncomment a line below and type it in.
-   SECOND_PHOTOS = how many slots to check (raise it if you have more).
-   ============================================================ */
+/* New photos for month two: assets/second1.jpg, second2.jpg …
+   Only files that exist are shown. */
 const SECOND_PHOTOS = 24;
 
 const SECOND_CAPTIONS = {
@@ -67,186 +65,264 @@ const SECOND_CAPTIONS = {
 /* ---------------- helpers ---------------- */
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-const HEARTS = ["💗", "❤️", "💕", "💕", "💞", "💞", "💖"];
+const HEART_CHARS = ["♥", "♥", "♡", "❤"];
+const HEART_COLORS = ["#d98a9f", "#f0d6ae", "#d8b183", "#f2ece4"];
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 /* ============================================================
-   1. INTRO / ENVELOPE GATE
+   1. INTRO TITLE CARD
    ============================================================ */
 const intro = $("#intro");
 const openBtn = $("#openBtn");
-const envelope = $("#envelope");
-document.body.classList.add("is-locked");
+document.body.classList.add("is-locked", "is-intro");
 
 function openSurprise() {
-  envelope.classList.add("open");
-  burstHearts(window.innerWidth / 2, window.innerHeight / 2, 26);
-
-  setTimeout(() => {
-    intro.classList.add("hide");
-    document.body.classList.remove("is-locked");
-    playMusic();
-    revealVisible();
-  }, 750);
+  if (!intro) return;
+  intro.classList.add("is-out");
+  document.body.classList.remove("is-locked");
+  document.body.classList.remove("is-intro");
+  playMusic();
+  setTimeout(() => { intro.hidden = true; }, 1050);
 }
 
-openBtn.addEventListener("click", openSurprise);
-envelope.addEventListener("click", openSurprise);
+if (openBtn) openBtn.addEventListener("click", openSurprise);
 
 /* ============================================================
-   2. FLOATING HEARTS BACKGROUND
+   2. STARFIELD
    ============================================================ */
-const canvas = $("#hearts");
-const ctx = canvas.getContext("2d");
-let particles = [];
-let W, H;
+const canvas = $("#stars");
+const ctx = canvas ? canvas.getContext("2d") : null;
+let stars = [];
+let meteors = [];
+let W = 0;
+let H = 0;
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+function buildStars() {
+  const count = Math.min(190, Math.round((W * H) / 9000));
+  stars = Array.from({ length: count }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.25 + 0.25,
+    a: Math.random() * 0.5 + 0.2,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.7 + 0.15,
+  }));
+}
 
 function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize", resize);
-
-class Heart {
-  constructor(burst = false) {
-    this.reset(burst);
-  }
-  reset(burst) {
-    this.x = Math.random() * W;
-    this.y = burst ? H + Math.random() * 60 : H + Math.random() * H;
-    this.size = 12 + Math.random() * 20;
-    this.speed = 0.35 + Math.random() * 0.9;
-    this.drift = (Math.random() - 0.5) * 0.7;
-    this.rot = Math.random() * Math.PI;
-    this.spin = (Math.random() - 0.5) * 0.02;
-    this.alpha = 0.18 + Math.random() * 0.42;
-    this.color = ["#ff6f91", "#e8446b", "#ff9db3", "#e8648a", "#ffd0dd"][
-      Math.floor(Math.random() * 5)
-    ];
-    this.emoji = Math.random() < 0.25;
-    this.char = HEARTS[Math.floor(Math.random() * HEARTS.length)];
-  }
-  update() {
-    this.y -= this.speed;
-    this.x += this.drift + Math.sin(this.y / 60) * 0.4;
-    this.rot += this.spin;
-    if (this.y < -40) this.reset();
-  }
-  draw() {
-    ctx.save();
-    ctx.globalAlpha = this.alpha;
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rot);
-    if (this.emoji) {
-      ctx.font = `${this.size}px serif`;
-      ctx.textAlign = "center";
-      ctx.fillText(this.char, 0, 0);
-    } else {
-      ctx.fillStyle = this.color;
-      ctx.beginPath();
-      const s = this.size / 2;
-      ctx.moveTo(0, s * 0.75);
-      ctx.bezierCurveTo(s * 1.4, -s * 0.4, s * 0.6, -s * 1.2, 0, -s * 0.35);
-      ctx.bezierCurveTo(-s * 0.6, -s * 1.2, -s * 1.4, -s * 0.4, 0, s * 0.75);
-      ctx.fill();
-    }
-    ctx.restore();
-  }
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  buildStars();
+  if (reduceMotion) drawStatic();
 }
 
-function initHearts(count = 34) {
-  particles = Array.from({ length: count }, () => {
-    const h = new Heart();
-    h.y = Math.random() * H; // spread on first paint
-    return h;
-  });
-}
-initHearts();
-
-function animate() {
+function drawStatic() {
   ctx.clearRect(0, 0, W, H);
-  particles.forEach((p) => {
-    p.update();
-    p.draw();
+  stars.forEach((s) => {
+    ctx.globalAlpha = s.a;
+    ctx.fillStyle = "#f4e7d4";
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
   });
-  requestAnimationFrame(animate);
 }
-animate();
+
+function drawFrame(t) {
+  ctx.clearRect(0, 0, W, H);
+
+  stars.forEach((s) => {
+    const twinkle = 0.55 + Math.sin(t * s.speed + s.phase) * 0.45;
+    ctx.globalAlpha = Math.max(0.04, s.a * twinkle);
+    ctx.fillStyle = "#f4e7d4";
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  /* occasional shooting star */
+  if (Math.random() < 0.0022 && meteors.length < 2) {
+    meteors.push({
+      x: W * (0.15 + Math.random() * 0.75),
+      y: H * (0.05 + Math.random() * 0.4),
+      vx: -(2.2 + Math.random() * 1.8),
+      vy: 1.1 + Math.random() * 1.4,
+      life: 1,
+    });
+  }
+
+  meteors = meteors.filter((m) => {
+    m.x += m.vx * 3;
+    m.y += m.vy * 3;
+    m.life -= 0.012;
+    if (m.life <= 0 || m.x < -100 || m.y > H + 100) return false;
+
+    const tailX = m.x - m.vx * 14;
+    const tailY = m.y - m.vy * 14;
+    const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+    grad.addColorStop(0, `rgba(240, 214, 174, ${0.55 * m.life})`);
+    grad.addColorStop(1, "rgba(240, 214, 174, 0)");
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(m.x, m.y);
+    ctx.lineTo(tailX, tailY);
+    ctx.stroke();
+    return true;
+  });
+}
+
+if (canvas && ctx) {
+  resize();
+  window.addEventListener("resize", resize);
+  if (!reduceMotion) {
+    const loop = (now) => {
+      drawFrame(now / 1000);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+}
 
 /* ============================================================
-   3. HEART BURST (click effects)
+   3. HEART BURST
    ============================================================ */
-function burstHearts(x, y, count = 14) {
+function burstHearts(x, y, count = 16) {
   for (let i = 0; i < count; i++) {
     const el = document.createElement("span");
     el.className = "burst-heart";
-    el.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+    el.textContent = HEART_CHARS[Math.floor(Math.random() * HEART_CHARS.length)];
+    el.style.color = HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)];
     const angle = Math.random() * Math.PI * 2;
-    const dist = 40 + Math.random() * 130;
-    el.style.left = x + Math.cos(angle) * dist - 12 + "px";
-    el.style.top = y + Math.sin(angle) * dist - 12 + "px";
-    el.style.fontSize = 16 + Math.random() * 22 + "px";
-    el.style.animationDuration = 1.1 + Math.random() * 1.2 + "s";
+    const dist = 30 + Math.random() * 140;
+    el.style.left = x + Math.cos(angle) * dist - 10 + "px";
+    el.style.top = y + Math.sin(angle) * dist - 10 + "px";
+    el.style.fontSize = 13 + Math.random() * 20 + "px";
+    el.style.animationDuration = 1.2 + Math.random() * 1.1 + "s";
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 2400);
+    setTimeout(() => el.remove(), 2600);
   }
 }
 
-$("#heartBurstBtn").addEventListener("click", (e) => {
-  burstHearts(e.clientX, e.clientY, 22);
-});
+const burstBtn = $("#heartBurstBtn");
+if (burstBtn) {
+  burstBtn.addEventListener("click", (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    burstHearts(r.left + r.width / 2, r.top + r.height / 2, 26);
+  });
+}
 
 document.addEventListener("click", (e) => {
-  if (Math.random() < 0.35 && !e.target.closest("button, a, .polaroid")) {
+  if (Math.random() < 0.3 && !e.target.closest("button, a, .tile, .frame")) {
     burstHearts(e.clientX, e.clientY, 3);
   }
 });
 
 /* ============================================================
-   4. GALLERY (built from CONFIG.photos, with fallbacks)
+   4. LIVE COUNTER — since 5 September 2026, 11:34 PM
    ============================================================ */
-const grid = $("#galleryGrid");
+const START = new Date("2026-09-05T23:34:00+08:00").getTime();
+const statEls = $$(".stat__num");
+let counterStarted = false;
+
+function elapsed() {
+  const seconds = Math.max(0, (Date.now() - START) / 1000);
+  return {
+    days: Math.floor(seconds / 86400),
+    hours: Math.floor(seconds / 3600),
+    minutes: Math.floor(seconds / 60),
+    seconds: Math.floor(seconds),
+  };
+}
+
+function renderCounter(multiplier = 1) {
+  const values = elapsed();
+  statEls.forEach((el) => {
+    const unit = el.dataset.unit;
+    const value = Math.floor(values[unit] * multiplier);
+    el.textContent = value.toLocaleString("en-US");
+  });
+}
+
+function startCounter() {
+  if (counterStarted || !statEls.length) return;
+  counterStarted = true;
+
+  if (reduceMotion) {
+    renderCounter();
+    setInterval(() => renderCounter(), 1000);
+    return;
+  }
+
+  const duration = 1400;
+  const t0 = performance.now();
+
+  function step(now) {
+    const p = Math.min(1, (now - t0) / duration);
+    const eased = 1 - Math.pow(1 - p, 3);
+    renderCounter(eased);
+    if (p < 1) requestAnimationFrame(step);
+    else setInterval(() => renderCounter(), 1000);
+  }
+
+  requestAnimationFrame(step);
+}
+
+/* ============================================================
+   5. GALLERIES
+   ============================================================ */
 const EXTENSIONS = ["jpg", "png", "jpeg"];
+const galleryItems = [];
 
 function withFallbacks(img, base, onFail) {
   const paths = EXTENSIONS.map((e) => `assets/${base}.${e}`);
   let i = 0;
+
   img.addEventListener("error", () => {
     i++;
     if (i < paths.length) img.src = paths[i];
     else if (onFail) onFail();
   });
+
   img.addEventListener("load", () => {
-    if (img.naturalWidth > 0) img.classList.add("loaded");
+    if (img.naturalWidth > 0) img.classList.add("is-loaded");
   });
+
   img.src = paths[0];
 }
 
-CONFIG.photos.forEach((p, idx) => {
-  const fig = document.createElement("figure");
-  fig.className = "polaroid reveal";
-  fig.style.setProperty("--tilt", `${(idx % 2 === 0 ? -1 : 1) * (1 + Math.random() * 2.4)}deg`);
-  fig.style.transitionDelay = `${idx * 90}ms`;
-  fig.innerHTML = `
-    <span class="polaroid__tape"></span>
-    ${p.badge ? `<span class="polaroid__badge">${p.badge}</span>` : ""}
-    <div class="polaroid__frame">
-      <img alt="${p.caption.replace(/"/g, "&quot;")}">
-      <div class="polaroid__placeholder"><span>💗</span><small>assets/${p.file}.jpg</small></div>
-    </div>
-    <figcaption class="polaroid__caption">${p.caption}</figcaption>
-  `;
-  withFallbacks(fig.querySelector("img"), p.file);
+/* ---- Archive filmstrip (all CONFIG.photos) ---- */
+const galleryGrid = $("#galleryGrid");
 
-  fig.addEventListener("click", () => openLightbox(fig.querySelector("img"), p.caption));
-  grid.appendChild(fig);
+CONFIG.photos.forEach((p, idx) => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "frame reveal";
+  btn.style.transitionDelay = `${Math.min(idx * 45, 360)}ms`;
+  btn.innerHTML = `
+    <span class="frame__wrap">
+      <img alt="${p.caption.replace(/"/g, "&quot;")}">
+      <span class="frame__num">${String(idx + 1).padStart(2, "0")}</span>
+      <span class="frame__ph">♥<small>assets/${p.file}.jpg</small></span>
+    </span>
+    <span class="frame__cap">${p.caption}</span>
+  `;
+
+  const img = btn.querySelector("img");
+  withFallbacks(img, p.file, () => btn.classList.add("is-missing"));
+  btn.addEventListener("click", () => openLightbox(img, p.caption));
+  galleryGrid.appendChild(btn);
+  galleryItems.push({ img, caption: p.caption });
 });
 
-/* ============================================================
-   5. 2ND MONTHSARY GALLERY (assets/second1, second2 …)
-   ------------------------------------------------------------------
-   Slots with no file are removed, so only real photos appear.
-   ============================================================ */
+/* ---- Month two masonry ---- */
 const secondGrid = $("#secondGrid");
 const secondSection = $("#second");
 let secondFailed = 0;
@@ -254,138 +330,303 @@ let secondFailed = 0;
 if (secondGrid) {
   for (let n = 1; n <= SECOND_PHOTOS; n++) {
     const caption = SECOND_CAPTIONS[n] || "2nd monthsary 💗";
-    const fig = document.createElement("figure");
-    fig.className = "polaroid reveal";
-    fig.style.setProperty("--tilt", `${(n % 2 === 0 ? -1 : 1) * (1 + Math.random() * 2.4)}deg`);
-    fig.style.transitionDelay = `${(n - 1) * 60}ms`;
-    fig.innerHTML = `
-      <span class="polaroid__tape"></span>
-      <span class="polaroid__badge">2nd Monthsary</span>
-      <div class="polaroid__frame">
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tile reveal";
+    btn.style.transitionDelay = `${Math.min((n - 1) * 55, 440)}ms`;
+    btn.innerHTML = `
+      <span class="tile__media">
         <img alt="${caption.replace(/"/g, "&quot;")}">
-        <div class="polaroid__placeholder"><span>💗</span><small>assets/second${n}.jpg</small></div>
-      </div>
-      <figcaption class="polaroid__caption">${caption}</figcaption>
+        <span class="tile__ph">♥<small>assets/second${n}.jpg</small></span>
+      </span>
+      <span class="tile__overlay">
+        <span class="tile__num">${String(n).padStart(2, "0")}</span>
+        <span class="tile__cap">${caption}</span>
+      </span>
     `;
 
-    withFallbacks(fig.querySelector("img"), `second${n}`, () => {
-      fig.remove();
+    const img = btn.querySelector("img");
+    withFallbacks(img, `second${n}`, () => {
+      btn.remove();
       secondFailed++;
-      /* no new photos yet: hide the whole section instead of showing an empty one */
       if (secondFailed === SECOND_PHOTOS && secondSection) secondSection.hidden = true;
     });
-    fig.addEventListener("click", () => openLightbox(fig.querySelector("img"), caption));
-    secondGrid.appendChild(fig);
+    btn.addEventListener("click", () => openLightbox(img, caption));
+    secondGrid.appendChild(btn);
+    galleryItems.push({ img, caption });
   }
 }
 
-/* featured heart-framed photo uses the same fallback chain */
-withFallbacks($(".heart-frame__img img"), "second7");
+/* ---- Featured heart photo ---- */
+const featuredImg = $(".poster__frame img");
+if (featuredImg) withFallbacks(featuredImg, "second7");
 
 /* ============================================================
-   6. LIGHTBOX
+   6. ARCHIVE ARROWS
+   ============================================================ */
+const strip = $("#galleryGrid");
+function scrollStrip(dir) {
+  if (!strip) return;
+  const card = strip.querySelector(".frame");
+  const step = card ? card.getBoundingClientRect().width + 18 : 320;
+  strip.scrollBy({ left: dir * step * 1.6, behavior: reduceMotion ? "auto" : "smooth" });
+}
+
+$("#archivePrev")?.addEventListener("click", () => scrollStrip(-1));
+$("#archiveNext")?.addEventListener("click", () => scrollStrip(1));
+
+/* ============================================================
+   7. LIGHTBOX
    ============================================================ */
 const lightbox = $("#lightbox");
 const lightboxImg = $("#lightboxImg");
 const lightboxCaption = $("#lightboxCaption");
+const lightboxCount = $("#lightboxCount");
+const lightboxPrev = $("#lightboxPrev");
+const lightboxNext = $("#lightboxNext");
+let lbList = [];
+let lbIndex = 0;
+
+function showLightboxAt(index) {
+  if (!lbList.length) return;
+  lbIndex = (index + lbList.length) % lbList.length;
+  const item = lbList[lbIndex];
+  lightboxImg.src = item.img.currentSrc || item.img.src;
+  lightboxImg.alt = item.caption;
+  lightboxCaption.textContent = item.caption;
+  lightboxCount.textContent = `${lbIndex + 1} / ${lbList.length}`;
+  const single = lbList.length < 2;
+  lightboxPrev.style.visibility = single ? "hidden" : "visible";
+  lightboxNext.style.visibility = single ? "hidden" : "visible";
+}
 
 function openLightbox(img, caption) {
-  if (!img.classList.contains("loaded")) return;
-  lightboxImg.src = img.src;
-  lightboxCaption.textContent = caption;
+  if (!img || !img.classList.contains("is-loaded")) return;
+  lbList = galleryItems.filter((item) => item.img.classList.contains("is-loaded"));
+  const index = lbList.findIndex((item) => item.img === img);
+  if (index < 0) return;
+
+  showLightboxAt(index);
   lightbox.hidden = false;
   requestAnimationFrame(() => lightbox.classList.add("show"));
   document.body.classList.add("is-locked");
 }
 
 function closeLightbox() {
+  if (!lightbox || lightbox.hidden) return;
   lightbox.classList.remove("show");
   document.body.classList.remove("is-locked");
-  setTimeout(() => (lightbox.hidden = true), 350);
+  setTimeout(() => { lightbox.hidden = true; }, 350);
 }
 
-$("#lightboxClose").addEventListener("click", closeLightbox);
-lightbox.addEventListener("click", (e) => {
+$("#lightboxClose")?.addEventListener("click", closeLightbox);
+lightboxPrev?.addEventListener("click", () => showLightboxAt(lbIndex - 1));
+lightboxNext?.addEventListener("click", () => showLightboxAt(lbIndex + 1));
+
+lightbox?.addEventListener("click", (e) => {
   if (e.target === lightbox) closeLightbox();
 });
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
+  if (!lightbox || lightbox.hidden) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") showLightboxAt(lbIndex - 1);
+  if (e.key === "ArrowRight") showLightboxAt(lbIndex + 1);
 });
 
 /* ============================================================
-   7. DEEPER LETTER TOGGLE
+   8. DEEPER LETTER
    ============================================================ */
 const deepBtn = $("#deepLetterBtn");
 const deepLetter = $("#deepLetter");
+const deepLabel = $(".letter__more-label");
 
-deepBtn.addEventListener("click", () => {
-  const open = !deepLetter.hidden;
-  deepLetter.hidden = open;
-  deepBtn.classList.toggle("open", !open);
-  deepBtn.querySelector(".letter-more__label").textContent = open
-    ? "Read the deeper one 🥰"
-    : "Hide it for now 🥰";
-  if (!open) {
-    setTimeout(() => deepLetter.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
-  }
-});
+if (deepBtn && deepLetter) {
+  deepBtn.addEventListener("click", () => {
+    const isOpen = !deepLetter.hidden;
+    deepLetter.hidden = isOpen;
+    deepBtn.classList.toggle("is-open", !isOpen);
+    deepBtn.setAttribute("aria-expanded", String(!isOpen));
+    if (deepLabel) deepLabel.textContent = isOpen ? "Read the deeper one" : "Hide it for now";
 
-/* ============================================================
-   8. MUSIC (optional — works once you add assets/music.mp3)
-   ============================================================ */
-const music = $("#bgMusic");
-const musicBtn = $("#musicBtn");
-let musicOn = false;
-
-function playMusic() {
-  if (!CONFIG.music) return;
-  music.volume = 0.55;
-  music.play().then(() => {
-    musicOn = true;
-    musicBtn.classList.add("playing");
-  }).catch(() => {
-    /* no file yet or autoplay blocked — user can tap the button */
+    if (!isOpen) {
+      setTimeout(() => {
+        deepBtn.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      }, 100);
+    }
   });
 }
 
-musicBtn.addEventListener("click", () => {
+/* ============================================================
+   9. MUSIC — our song
+   ============================================================ */
+const music = $("#bgMusic");
+const musicBtn = $("#musicBtn");
+const musicTitle = $("#musicTitle");
+const musicArtist = $("#musicArtist");
+const song = CONFIG.music || {};
+let musicOn = false;
+const idleArtist = song.artist || "Koni ♥ Yana";
+
+if (musicTitle) musicTitle.textContent = song.title || "Our Song";
+if (musicArtist) musicArtist.textContent = idleArtist;
+if (music && song.src) music.src = song.src;
+if (musicBtn) musicBtn.setAttribute("aria-label", `Play ${song.title || "our song"}`);
+
+function setPlaying(on) {
+  musicOn = on;
+  musicBtn?.classList.toggle("playing", on);
+  musicBtn?.setAttribute("aria-pressed", String(on));
+  musicBtn?.setAttribute("aria-label", `${on ? "Pause" : "Play"} ${song.title || "our song"}`);
+}
+
+function playMusic() {
+  if (!music || !song.src) return;
+  music.volume = 0.55;
+  music.play().then(() => setPlaying(true)).catch(() => {
+    /* missing file or autoplay blocked — the button still works after a tap */
+  });
+}
+
+musicBtn?.addEventListener("click", () => {
+  if (!music) return;
   if (musicOn) {
     music.pause();
-    musicOn = false;
-    musicBtn.classList.remove("playing");
+    setPlaying(false);
   } else {
     playMusic();
-    if (music.paused) {
-      // file missing: gentle hint instead of a silent button
-      musicBtn.classList.add("playing");
-      setTimeout(() => musicBtn.classList.remove("playing"), 1200);
-    } else {
-      musicOn = true;
-    }
   }
 });
 
-music.addEventListener("error", () => {
-  musicBtn.style.opacity = "0.55";
-  musicBtn.title = "Add assets/music.mp3 to enable music";
+music?.addEventListener("play", () => setPlaying(true));
+music?.addEventListener("pause", () => setPlaying(false));
+music?.addEventListener("error", () => {
+  if (musicArtist) musicArtist.textContent = "Add music.mp3";
+  if (musicBtn) {
+    musicBtn.style.opacity = "0.6";
+    musicBtn.title = "Add your song at assets/music.mp3";
+  }
 });
 
 /* ============================================================
-   9. SCROLL REVEAL
+   10. DOCK NAV — active section, scroll progress
    ============================================================ */
-const observer = new IntersectionObserver(
+const nav = $("#nav");
+const dockLinks = $$(".dock__link");
+const progressBar = $("#progressBar");
+const navSections = ["top", "memories", "second", "letter"]
+  .map((id) => document.getElementById(id))
+  .filter(Boolean);
+
+function setActiveSection() {
+  if (!dockLinks.length || !navSections.length) return;
+  const line = window.scrollY + window.innerHeight * 0.45;
+  let current = navSections[0];
+  navSections.forEach((section) => {
+    if (section.offsetTop <= line) current = section;
+  });
+  dockLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.dataset.section === current.id);
+  });
+}
+
+if (nav) {
+  dockLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      dockLinks.forEach((l) => l.classList.remove("is-active"));
+      link.classList.add("is-active");
+    });
+  });
+}
+
+let lastScrollY = window.scrollY;
+
+function updateProgress() {
+  setActiveSection();
+
+  const y = window.scrollY;
+  const delta = y - lastScrollY;
+  if (nav) {
+    if (y > 420 && delta > 4) nav.classList.add("is-hidden");
+    else if (delta < -4 || y <= 420) nav.classList.remove("is-hidden");
+  }
+  lastScrollY = y;
+
+  if (!progressBar) return;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+  progressBar.style.transform = `scaleX(${p})`;
+}
+
+updateProgress();
+window.addEventListener("scroll", updateProgress, { passive: true });
+window.addEventListener("resize", updateProgress);
+
+/* ============================================================
+   11. SCROLL REVEAL
+   ============================================================ */
+const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
+        revealObserver.unobserve(entry.target);
       }
     });
   },
-  { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+  { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
 );
 
-function revealVisible() {
-  $$(".reveal").forEach((el) => observer.observe(el));
+function observeReveals() {
+  $$(".reveal").forEach((el) => revealObserver.observe(el));
 }
-revealVisible();
+
+observeReveals();
+
+/* ============================================================
+   12. COUNTER TRIGGER
+   ============================================================ */
+const numbersSection = $("#numbers");
+if (numbersSection) {
+  const counterObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startCounter();
+          counterObserver.disconnect();
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  counterObserver.observe(numbersSection);
+}
+
+/* ============================================================
+   13. DESKTOP DETAILS — tilt + cursor glow
+   ============================================================ */
+if (finePointer && !reduceMotion) {
+  $$(".tilt").forEach((el) => {
+    el.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateX(${(-py * 6).toFixed(2)}deg) rotateY(${(px * 6).toFixed(2)}deg)`;
+    });
+    el.addEventListener("pointerleave", () => {
+      el.style.transform = "";
+    });
+  });
+
+  const glow = $("#cursorGlow");
+  if (glow) {
+    window.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      glow.classList.add("is-on");
+    }, { passive: true });
+
+    document.addEventListener("pointerleave", () => glow.classList.remove("is-on"));
+  }
+}

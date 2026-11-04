@@ -3,137 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Happy 2nd Monthsary, Wifey 💗</title>
-  <meta name="description" content="A little surprise for my wifey — happy 2nd monthsary!" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>" />
+  <title>Two Months of Us — Happy 2nd Monthsary, Wifey</title>
+  <meta name="description" content="A little film for my wifey on our 2nd monthsary — two months of us, and counting." />
+  <meta name="theme-color" content="#08070f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a14'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' fill='%23d8b183'%3E%E2%99%A5%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- Scalable heart clip shape (objectBoundingBox = scales to any screen size) -->
-  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <!-- scalable heart clip (objectBoundingBox = scales to any size) -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
       <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
-        <path d="M0.5,0.95238 C0.14286,0.69048 0.02381,0.47619 0.02381,0.28571 C0.02381,0.13095 0.14286,0.03571 0.27381,0.03571 C0.36905,0.03571 0.45238,0.09048 0.5,0.17143 C0.54762,0.09048 0.63095,0.03571 0.72619,0.03571 C0.85714,0.03571 0.97619,0.13095 0.97619,0.28571 C0.97619,0.47619 0.85714,0.69048 0.5,0.95238 Z" />
+        <path d="M0.5 0.985 C0.44 0.925 0.015 0.665 0.015 0.355 C0.015 0.165 0.145 0.035 0.305 0.035 C0.405 0.035 0.47 0.09 0.5 0.155 C0.53 0.09 0.595 0.035 0.695 0.035 C0.855 0.035 0.985 0.165 0.985 0.355 C0.985 0.665 0.56 0.925 0.5 0.985 Z"/>
       </clipPath>
     </defs>
   </svg>
 
-  <!-- ============ INTRO / ENVELOPE GATE ============ -->
-  <div id="intro" class="intro">
+  <!-- ambient layers -->
+  <canvas id="stars" class="stars" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ============ INTRO TITLE CARD ============ -->
+  <section class="intro" id="intro">
     <div class="intro__inner">
-      <div class="envelope" id="envelope">
-        <div class="envelope__flap"></div>
-        <div class="envelope__body">
-          <span class="envelope__heart">💗</span>
-        </div>
-      </div>
-      <p class="intro__hint">Another surprise for you 💌</p>
-      <button class="intro__btn" id="openBtn">Open it, Wifey Ko✨</button>
+      <p class="eyebrow eyebrow--center">A little film for Yana</p>
+      <h1 class="intro__title">Two <em>Months</em></h1>
+      <p class="intro__sub">with the one who feels like home</p>
+      <button class="btn btn--gold intro__btn" id="openBtn" type="button">
+        <span>Begin</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="intro__hint">headphones on, my love</p>
     </div>
-  </div>
+    <span class="intro__date">05 · 09 · 26 &nbsp;—&nbsp; 05 · 11 · 26</span>
+  </section>
 
-  <!-- ============ FLOATING HEARTS CANVAS ============ -->
-  <canvas id="hearts" class="hearts-canvas"></canvas>
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Koni and Yana — back to top">
+      <span class="brand__mono" aria-hidden="true">K<i>♥</i>Y</span>
+      <span class="brand__text">
+        <strong>Koni &amp; Yana</strong>
+        <small>2nd Monthsary</small>
+      </span>
+    </a>
 
-  <!-- ============ TOP NAV ============ -->
-  <nav class="nav">
-    <span class="nav__brand">Koni <span class="nav__amp">&hearts;</span> Yana</span>
-    <button class="music-btn" id="musicBtn" title="Play / pause music">
-      <span id="musicIcon">♪</span> <span class="music-btn__label">music</span>
+    <button class="vinyl" id="musicBtn" type="button" aria-label="Play our song" aria-pressed="false">
+      <span class="vinyl__disc" aria-hidden="true"><span class="vinyl__label">♥</span></span>
+      <span class="vinyl__meta">
+        <span class="vinyl__title" id="musicTitle">Our Song</span>
+        <span class="vinyl__artist" id="musicArtist">Koni ♥ Yana</span>
+      </span>
+      <span class="vinyl__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     </button>
-  </nav>
+  </header>
 
   <main>
 
     <!-- ============ HERO ============ -->
-    <header class="hero" id="top">
-      <p class="hero__kicker reveal">to my one and only</p>
-      <h1 class="hero__title">
-        <span class="hero__line reveal">Happy</span>
-        <span class="hero__line hero__line--big reveal">2<sup>nd</sup> Monthsary</span>
-        <span class="hero__script reveal">Wifey&nbsp;ko 💗</span>
+    <section class="hero" id="top">
+      <p class="eyebrow eyebrow--center reveal">05 September 2026 — 05 November 2026</p>
+      <h1 class="hero__title reveal">
+        <span class="hero__over">Celebrating</span>
+        <span class="hero__big">Two Months</span>
+        <span class="hero__italic">of us, <em>and counting</em></span>
       </h1>
-      <p class="hero__sub reveal">
+      <p class="hero__lede reveal">
         Two months down, forever to go. Thank you for staying — for making even the
         ordinary days feel like something worth keeping.
       </p>
-      <div class="hero__heartbeat reveal" aria-hidden="true">
-        <span class="pulse"></span>
-        <span class="emoji-heart">❤️</span>
+      <div class="hero__meta reveal" aria-label="Chapter two, Koni and Yana, written with love">
+        <span>Chapter 02</span>
+        <span>Koni &amp; Yana</span>
+        <span>Written with love</span>
       </div>
-      <a class="scroll-cue" href="#memories" aria-label="Scroll down">
-        <span></span>
+      <a class="scroll-hint" href="#numbers" aria-label="Scroll to the next section">
+        <span class="scroll-hint__line"></span>
+        <span>scroll</span>
       </a>
-    </header>
+    </section>
 
-    <!-- ============ SINCE ============ -->
-    <section class="section counter" id="counter">
-      <h2 class="section__title reveal">Two months of <em>us</em></h2>
-      <p class="section__sub reveal">and every second has been worth it</p>
-      <p class="counter__caption reveal">of loving you &mdash; since September 5, 2026 11:34PM</p>
+    <!-- ============ NUMBERS ============ -->
+    <section class="section numbers" id="numbers">
+      <div class="section__head reveal">
+        <p class="eyebrow eyebrow--center">The time between</p>
+        <h2 class="display">Every second, <em>kept.</em></h2>
+      </div>
+
+      <div class="numbers__grid reveal">
+        <div class="stat">
+          <span class="stat__num" data-unit="days">0</span>
+          <span class="stat__label">days</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num" data-unit="hours">0</span>
+          <span class="stat__label">hours</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num" data-unit="minutes">0</span>
+          <span class="stat__label">minutes</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num" data-unit="seconds">0</span>
+          <span class="stat__label">seconds</span>
+        </div>
+      </div>
+
+      <p class="numbers__since reveal">since 5 September 2026 · 11:34 PM</p>
     </section>
 
     <!-- ============ FEATURED MEMORY ============ -->
-    <section class="section featured" id="memories">
-      <h2 class="section__title reveal">Our favorite memory</h2>
-      <p class="section__sub reveal">the little things that mean everything</p>
-
-      <figure class="heart-frame reveal" id="heartFrame">
-        <div class="heart-frame__img">
-          <img src="assets/second7.png" data-fallbacks="assets/second7.png,assets/second7.jpeg,assets/second7.jpg" alt="Our photo together" />
-          <div class="photo-placeholder"><span>💗</span><small>Add <b>assets/se.jpg</b></small></div>
+    <section class="section feature" id="memories">
+      <div class="feature__grid">
+        <div class="feature__copy reveal">
+          <p class="eyebrow">Our favorite frame</p>
+          <h2 class="display">Two halves,<br /><em>one whole heart.</em></h2>
+          <p class="feature__text">
+            Some moments don't need a big story. This one just feels like us —
+            quiet, a little silly, and completely at home.
+          </p>
+          <p class="feature__note">— the frame I keep going back to</p>
         </div>
-        <figcaption class="heart-frame__caption">Two halves, one whole heart 💗</figcaption>
-      </figure>
+
+        <figure class="poster tilt reveal">
+          <div class="poster__frame">
+            <img src="assets/second7.png" data-fallbacks="assets/second7.png,assets/second7.jpeg,assets/second7.jpg" alt="Our photo together" />
+            <div class="poster__ph"><span>♥</span><small>Add assets/second7.png</small></div>
+          </div>
+          <span class="poster__num" aria-hidden="true">02</span>
+          <figcaption>Month two · just us</figcaption>
+        </figure>
+      </div>
     </section>
 
     <!-- ============ 2ND MONTHSARY GALLERY ============ -->
     <section class="section gallery" id="second">
-      <h2 class="section__title reveal">Our 2nd monthsary 📸</h2>
-      <p class="section__sub reveal">the new ones — month two, in pictures</p>
+      <div class="section__head reveal">
+        <p class="eyebrow eyebrow--center">New memories</p>
+        <h2 class="display">Month two, <em>in frames.</em></h2>
+        <p class="section__sub">the new ones — month two, in pictures</p>
+      </div>
 
-      <div class="gallery__grid" id="secondGrid">
-        <!-- built from assets/second1.jpg, second2.jpg … in js/script.js -->
+      <div class="masonry" id="secondGrid">
+        <!-- built from assets/second1… in js/script.js -->
       </div>
     </section>
 
-    <!-- ============ GALLERY ============ -->
-    <section class="section gallery">
-      <h2 class="section__title reveal">Our memories 📸</h2>
-      <p class="section__sub reveal">click a photo to see it bigger</p>
+    <!-- ============ ARCHIVE FILMSTRIP ============ -->
+    <section class="section archive" id="archive">
+      <div class="section__head section__head--row reveal">
+        <div>
+          <p class="eyebrow">The archive</p>
+          <h2 class="display">Every frame <em>we've kept.</em></h2>
+          <p class="section__sub">drag or scroll sideways</p>
+        </div>
+        <div class="arrows">
+          <button class="arrow" id="archivePrev" type="button" aria-label="Previous photos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="arrow" id="archiveNext" type="button" aria-label="Next photos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
 
-      <div class="gallery__grid" id="galleryGrid">
-        <!-- photos are configured in js/script.js -->
+      <div class="filmstrip" id="galleryGrid">
+        <!-- built from CONFIG.photos in js/script.js -->
       </div>
     </section>
 
     <!-- ============ REASONS ============ -->
-    <section class="section reasons">
-      <h2 class="section__title reveal">Why you're still my favorite</h2>
-      <p class="section__sub reveal">two months in, and the list just keeps growing</p>
-      <div class="reasons__grid">
-        <article class="reason reveal"><span class="reason__emoji">🌙</span><h3>Your goodnights</h3><p>Two months of them, and I still wait for your last message before I sleep.</p></article>
-        <article class="reason reveal"><span class="reason__emoji">🤝</span><h3>Your patience</h3><p>You stayed through my busy days, my tired days, and my quiet ones too.</p></article>
-        <article class="reason reveal"><span class="reason__emoji">☎️</span><h3>Our calls</h3><p>Even the silent ones feel like home — just you there, and that's enough.</p></article>
-        <article class="reason reveal"><span class="reason__emoji">📌</span><h3>Your updates</h3><p>Every “im home na” still makes my whole day feel lighter.</p></article>
-        <article class="reason reveal"><span class="reason__emoji">💬</span><h3>Your honesty</h3><p>Even the hard conversations, because you'd rather fix us than walk away.</p></article>
-        <article class="reason reveal"><span class="reason__emoji">💯</span><h3>Just you</h3><p>Two months later, still my favorite person. No contest, no hesitation.</p></article>
+    <section class="section reasons-section" id="reasons">
+      <div class="section__head reveal">
+        <p class="eyebrow eyebrow--center">Still my favorite</p>
+        <h2 class="display">Why you, <em>always.</em></h2>
+        <p class="section__sub">two months in, and the list keeps growing</p>
+      </div>
+
+      <div class="reasons">
+        <article class="reason reveal">
+          <span class="reason__num">01</span>
+          <div><h3>Your goodnights</h3><p>Two months of them, and I still wait for your last message before I sleep.</p></div>
+        </article>
+        <article class="reason reveal">
+          <span class="reason__num">02</span>
+          <div><h3>Your patience</h3><p>You stayed through my busy days, my tired days, and my quiet ones too.</p></div>
+        </article>
+        <article class="reason reveal">
+          <span class="reason__num">03</span>
+          <div><h3>Our calls</h3><p>Even the silent ones feel like home — just you there, and that's enough.</p></div>
+        </article>
+        <article class="reason reveal">
+          <span class="reason__num">04</span>
+          <div><h3>Your updates</h3><p>Every “im home na” still makes my whole day feel lighter.</p></div>
+        </article>
+        <article class="reason reveal">
+          <span class="reason__num">05</span>
+          <div><h3>Your honesty</h3><p>Even the hard conversations, because you'd rather fix us than walk away.</p></div>
+        </article>
+        <article class="reason reveal">
+          <span class="reason__num">06</span>
+          <div><h3>Just you</h3><p>Two months later, still my favorite person. No contest, no hesitation.</p></div>
+        </article>
       </div>
     </section>
 
     <!-- ============ LETTERS ============ -->
     <section class="section letters" id="letter">
-      <h2 class="section__title reveal">A letter for you 💌</h2>
-      <p class="section__sub reveal">please read it slowly, okay?</p>
+      <div class="section__head reveal">
+        <p class="eyebrow eyebrow--center">A letter for you</p>
+        <h2 class="display">Read it <em>slowly</em>, okay?</h2>
+      </div>
 
       <!-- Letter 1 -->
       <article class="letter reveal">
-        <div class="letter__stamp">💗</div>
-        <p class="letter__date">Happy 2nd Monthsary</p>
+        <div class="letter__top">
+          <p class="letter__date">Happy 2nd Monthsary</p>
+          <div class="letter__seal" aria-hidden="true">K<span>♥</span>Y</div>
+        </div>
         <p class="letter__greeting">Wifey ko! 💗</p>
         <p>
           Happy 2nd monthsary sa atin. Dalawang buwan na mula noong
@@ -156,16 +249,18 @@
       </article>
 
       <!-- Letter 2 (deeper) -->
-      <div class="letter-more reveal">
-        <button class="letter-more__btn" id="deepLetterBtn">
-          <span class="letter-more__label">Read the deeper one ✨</span>
-          <span class="letter-more__arrow">↓</span>
+      <div class="letter__more reveal">
+        <button class="btn btn--ghost" id="deepLetterBtn" type="button" aria-expanded="false" aria-controls="deepLetter">
+          <span class="letter__more-label">Read the deeper one</span>
+          <svg class="letter__more-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
 
       <article class="letter letter--deep" id="deepLetter" hidden>
-        <div class="letter__stamp">✨</div>
-        <p class="letter__date">Dalawang buwan, at isang buong puso pa rin</p>
+        <div class="letter__top">
+          <p class="letter__date">Dalawang buwan, at isang buong puso pa rin</p>
+          <div class="letter__seal" aria-hidden="true">02</div>
+        </div>
         <p class="letter__greeting">Wifey ko,</p>
 
         <p>
@@ -186,7 +281,7 @@
           maliit na lugar sa internet kung saan nakasulat lahat ng hindi ko kayang sabihin
           nang tama sa chat. Ngayong second monthsary, ginawa ko ulit. Hindi dahil may bago,
           kundi dahil <b>dumadami</b>. Dumadami ang memories, dumadami ang rason, at
-          dumadami ang pangako kong babalikan ka.
+          dumadami ang mga pangako kong babalikan natin ang isa't isa.
         </p>
         <p>
           Hindi naman tayo perpekto. May mga oras pa rin na nagkakaintindihan tayo nang
@@ -210,7 +305,7 @@
         <p class="letter__quote">
           “Hindi tama ang isang buwan lang para sabihing mahal kita. Kaya heto —
           pangalawang buwan, parehong intensyon: pipiliin pa rin kita, at uunahin pa rin
-          kita, hangga't pinapayagan mo.”
+          kita.”
         </p>
         <!-- This section contains memorable lines from our conversations needs to be commented for a reason -->
         <!-- <p class="letter__label">mga linya natin na hindi ko malimutan ✦</p>
@@ -230,7 +325,7 @@
           susunod na buwan.
         </p>
         <p>
-          Wifey ko, you can always open up to me—kapag pagod ka, may mga hinanakit kang kinikimkim, o kailangan mo lang ng kausap. Lagi mong sinasabi na “people come and go,” pero gusto kong malaman mong nandito lang ako para sa'yo. Kapag hindi mo alam kung ano ang gagawin, sasamahan kita at pakikinggan. I can be your shoulder to cry on, your best friend, your partner in crime, your psychiatrist, and your biggest cheerleader to support you all the time. Hindi mo kailangang harapin ang lahat nang mag-isa.
+          Wifey ko, you can always open up to me—kapag pagod ka, may mga hinanakit kang kinikimkim, o kailangan mo lang ng kausap. Lagi mong sinasabi na “people come and go,” pero gusto kong malaman mong nandito lang ako para sa'yo kahit anong mangyari. Kapag hindi mo alam kung ano ang gagawin, sasamahan kita at pakikinggan. I can be your shoulder to cry on, your best friend, your partner in crime, your psychiatrist, and your biggest cheerleader to support you all the time. Hindi mo kailangang harapin ang lahat nang mag-isa.
         </p>
         <p>
           Salamat sa dalawang buwan, Yana. Salamat sa pagmamahal na tahimik pero totoo.
@@ -248,27 +343,57 @@
     </section>
 
     <!-- ============ CLOSING ============ -->
-    <section class="closing">
-      <p class="closing__script reveal">see you on our 3rd…</p>
-      <h2 class="closing__title reveal">and the 4th, and the 5th,<br />and every month after that 💗</h2>
-      <button class="closing__btn reveal" id="heartBurstBtn">tap for hearts 🥰</button>
-      <p class="closing__sign reveal">— Koni <span>&hearts;</span> Yana</p>
+    <section class="closing" id="closing">
+      <p class="eyebrow eyebrow--center reveal">Next chapter</p>
+      <h2 class="display closing__title reveal">See you on our <em>3rd</em>…</h2>
+      <p class="closing__note reveal">and the 4th, and the 5th, and every month after that.</p>
+      <button class="btn btn--gold closing__btn reveal" id="heartBurstBtn" type="button">Send hearts</button>
+      <p class="closing__sign reveal">— Koni <span>♥</span> Yana</p>
     </section>
 
   </main>
 
   <footer class="footer">
-    <p>Made with love, just for you 💗 &nbsp;•&nbsp; Happy 2nd Monthsary</p>
+    <p>Made with love, just for you &nbsp;·&nbsp; Happy 2nd Monthsary</p>
   </footer>
+
+  <!-- ============ FLOATING DOCK NAV ============ -->
+  <nav class="dock" id="nav" aria-label="Sections">
+    <a class="dock__link" href="#top" data-section="top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5V20.5h13V9.5"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="dock__link" href="#memories" data-section="memories">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7.5 4.5v15M16.5 4.5v15M3 9h4.5M16.5 9H21M3 15h4.5M16.5 15H21"/></svg>
+      <span>Story</span>
+    </a>
+    <a class="dock__link" href="#second" data-section="second">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></svg>
+      <span>Frames</span>
+    </a>
+    <a class="dock__link" href="#letter" data-section="letter">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+      <span>Letter</span>
+    </a>
+  </nav>
 
   <!-- ============ LIGHTBOX ============ -->
   <div class="lightbox" id="lightbox" hidden>
-    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
-    <img class="lightbox__img" id="lightboxImg" src="" alt="" />
-    <p class="lightbox__caption" id="lightboxCaption"></p>
+    <button class="lightbox__close" id="lightboxClose" type="button" aria-label="Close">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" type="button" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+      <figcaption class="lightbox__caption" id="lightboxCaption"></figcaption>
+      <p class="lightbox__count" id="lightboxCount"></p>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" type="button" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 
-  <!-- hidden music element: add assets/music.mp3 and it will work -->
+  <!-- Our song: replace assets/music.mp3, then set the title/artist in CONFIG.music (js/script.js) -->
   <audio id="bgMusic" loop preload="auto" src="assets/music.mp3"></audio>
 
   <script src="js/script.js"></script>
